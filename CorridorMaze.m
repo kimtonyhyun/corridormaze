@@ -12,25 +12,34 @@ classdef CorridorMaze < handle
         function maze = CorridorMaze(comPort) %, comPortDue) (SE change)
             % Set up parameters
             %------------------------------------------------------------
-            p.corridor(1).step = 29;  % Dir is expected to be pin "step"-2
-            p.corridor(1).dose = 25;
-            p.corridor(1).dose_duration = 40; % ms
-            p.corridor(1).lick = 23;
             
-            p.corridor(2).step = 28;
-            p.corridor(2).dose = 24;
-            p.corridor(2).dose_duration = 40;
-            p.corridor(2).lick = 22;
+            % Map JP label on breakout board to corridor index
+            jp_to_corridor = [1 3 2 4];
+                              
+            % JP1
+            p.corridor(jp_to_corridor(1)).step = 53;  % Dir is expected to be pin "step"-2
+            p.corridor(jp_to_corridor(1)).dose = 49;
+            p.corridor(jp_to_corridor(1)).dose_duration = 40;
+            p.corridor(jp_to_corridor(1)).lick = 47;
             
-            p.corridor(3).step = 53;
-            p.corridor(3).dose = 49;
-            p.corridor(3).dose_duration = 40;
-            p.corridor(3).lick = 47;
             
-            p.corridor(4).step = 52;
-            p.corridor(4).dose = 48;
-            p.corridor(4).dose_duration = 40;
-            p.corridor(4).lick = 46;
+            % JP2
+            p.corridor(jp_to_corridor(2)).step = 52;
+            p.corridor(jp_to_corridor(2)).dose = 48;
+            p.corridor(jp_to_corridor(2)).dose_duration = 40;
+            p.corridor(jp_to_corridor(2)).lick = 46;
+            
+            % JP3
+            p.corridor(jp_to_corridor(3)).step = 29;
+            p.corridor(jp_to_corridor(3)).dose = 25;
+            p.corridor(jp_to_corridor(3)).dose_duration = 40; % ms
+            p.corridor(jp_to_corridor(3)).lick = 23;
+            
+            % JP4
+            p.corridor(jp_to_corridor(4)).step = 28;
+            p.corridor(jp_to_corridor(4)).dose = 24;
+            p.corridor(jp_to_corridor(4)).dose_duration = 40;
+            p.corridor(jp_to_corridor(4)).lick = 22;
             
             p.num_corridors = length(p.corridor);
             
