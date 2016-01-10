@@ -9,7 +9,7 @@ classdef CorridorMaze < handle
     end
     
     methods
-        function maze = CorridorMaze(comPort) %, comPortDue) (SE change)
+        function maze = CorridorMaze(comPort)
             % Set up parameters
             %------------------------------------------------------------
             
@@ -21,7 +21,6 @@ classdef CorridorMaze < handle
             p.corridor(jp_to_corridor(1)).dose = 49;
             p.corridor(jp_to_corridor(1)).dose_duration = 40;
             p.corridor(jp_to_corridor(1)).lick = 47;
-            
             
             % JP2
             p.corridor(jp_to_corridor(2)).step = 52;

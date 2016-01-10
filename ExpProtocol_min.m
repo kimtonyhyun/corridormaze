@@ -27,7 +27,7 @@ else
 end
 
 % Ready to begin!
-disp('All platforms in place and acquisition board initialized. Press any key to continue.')
+disp('All platforms in place. Press any key to continue.')
 pause;
 
 % Trigger image acquistion
