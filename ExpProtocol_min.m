@@ -27,7 +27,11 @@ else
 end
 
 % Ready to begin!
-disp('All platforms in place. Press any key to continue.')
+fprintf('%s: All platforms in place\n', datestr(now));
+if any(maze.get_lick_state)
+    fprintf('  WARNING: Lick sensors persistently active? Please clear before continuing.\n');
+end
+disp('  Press any key to continue...')
 pause;
 
 % Trigger image acquistion

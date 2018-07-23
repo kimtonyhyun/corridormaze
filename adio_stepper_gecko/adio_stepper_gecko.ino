@@ -2,6 +2,9 @@
  * Tony Hyun Kim
  * kimth@stanford.edu
  * 2015 07 30: Use Gecko stepper drivers
+ * 2018 07 21: 
+ *  - Debounce digital inputs, to handle glitches in capacitive lick sensors
+ *  - Indicate on pin DIGITAL_READ_INDICATOR when in digital read routine
  */
 
 /* Analog and Digital Input and Output Server for MATLAB     */
@@ -38,10 +41,14 @@
 #define INTERNAL INTERNAL1V1
 #endif
 
+#define DIGITAL_READ_INDICATOR 9
+#define DEBOUNCE_DELAY 1000 // microseconds
+
 void setup() {
   /* initialize serial                                       */
   Serial.begin(115200);
-  
+  pinMode(DIGITAL_READ_INDICATOR, OUTPUT);
+  digitalWrite(DIGITAL_READ_INDICATOR, 0);
 }
 
 
@@ -55,6 +62,7 @@ void loop() {
   int  val =  0;           /* generic value read from serial */
   int  agv =  0;           /* generic analog value           */
   int  dgv =  0;           /* generic digital value          */
+  int  dgv_prev = 0;
 
   int stepsRemaining = 0;
 
@@ -149,7 +157,13 @@ void loop() {
          from abs('c')=99, pin 2, to abs('¦')=166, pin 69    */
       if (val>98 && val<167) {
         pin=val-97;                /* calculate pin          */
-        dgv=digitalRead(pin);      /* perform Digital Input  */
+        digitalWrite(DIGITAL_READ_INDICATOR, 1);
+        do { // THK: Software debounce
+          dgv_prev = digitalRead(pin);
+          delayMicroseconds(DEBOUNCE_DELAY);
+          dgv = digitalRead(pin);
+        } while (dgv_prev != dgv);
+        digitalWrite(DIGITAL_READ_INDICATOR, 0);
         Serial.println(dgv);       /* send value via serial  */
       }
       s=-1;  /* we are done with DI so next state is -1      */

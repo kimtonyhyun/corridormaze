@@ -19,25 +19,26 @@ classdef CorridorMaze < handle
             % JP1
             p.corridor(jp_to_corridor(1)).step = 53;  % Dir is expected to be pin "step"-2
             p.corridor(jp_to_corridor(1)).dose = 49;
-            p.corridor(jp_to_corridor(1)).dose_duration = 40;
+            p.corridor(jp_to_corridor(1)).dose_duration = 35;
             p.corridor(jp_to_corridor(1)).lick = 47;
+            
             
             % JP2
             p.corridor(jp_to_corridor(2)).step = 52;
             p.corridor(jp_to_corridor(2)).dose = 48;
-            p.corridor(jp_to_corridor(2)).dose_duration = 40;
+            p.corridor(jp_to_corridor(2)).dose_duration = 50;
             p.corridor(jp_to_corridor(2)).lick = 46;
             
             % JP3
             p.corridor(jp_to_corridor(3)).step = 29;
             p.corridor(jp_to_corridor(3)).dose = 25;
-            p.corridor(jp_to_corridor(3)).dose_duration = 40; % ms
+            p.corridor(jp_to_corridor(3)).dose_duration = 25; % ms
             p.corridor(jp_to_corridor(3)).lick = 23;
             
             % JP4
             p.corridor(jp_to_corridor(4)).step = 28;
             p.corridor(jp_to_corridor(4)).dose = 24;
-            p.corridor(jp_to_corridor(4)).dose_duration = 40;
+            p.corridor(jp_to_corridor(4)).dose_duration = 30;
             p.corridor(jp_to_corridor(4)).lick = 22;
             
             p.num_corridors = length(p.corridor);
@@ -45,6 +46,7 @@ classdef CorridorMaze < handle
             % Synchronization outputs
             p.sync.miniscope_trig = 13;
             p.sync.foot_pedal = 12;
+            p.sync.og_led = 10;
             
             maze.params = p;
             
@@ -62,13 +64,28 @@ classdef CorridorMaze < handle
             end
             
             maze.a.pinMode(maze.params.sync.miniscope_trig, 'output');
+            maze.a.pinMode(maze.params.sync.og_led, 'output');
             maze.a.pinMode(maze.params.sync.foot_pedal, 'input');
             
             % Assume all corridors are in the plate position (0), rather
             %   than the mesh position (1)
             %------------------------------------------------------------
             maze.corridor_state = [0 0 0 0];
-             
+            
+            % Capacitive lick sensors can get "stuck" in the active state.
+            % Check for it and issue warning if the case.
+            lick_state = maze.get_lick_state;
+            if any(lick_state)
+                fprintf('WARNING: Lick sensors persistently active?\n');
+            end
+        end
+        
+        function opto_on(maze)
+            maze.a.digitalWrite(maze.params.sync.og_led, 1);
+        end
+        
+        function opto_off(maze)
+            maze.a.digitalWrite(maze.params.sync.og_led, 0);
         end
         
         function miniscope_start(maze)
@@ -91,8 +108,7 @@ classdef CorridorMaze < handle
         
         function lick = is_licking(maze, corridor_ind)
             lick_pin = maze.params.corridor(corridor_ind).lick;
-            val = maze.a.digitalRead(lick_pin);
-            lick = (val == 0); % HW pin goes low for lick
+            lick = maze.a.digitalRead(lick_pin);
         end % is_licking
         
         function lick_state = get_lick_state(maze)
