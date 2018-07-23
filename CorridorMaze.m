@@ -9,7 +9,7 @@ classdef CorridorMaze < handle
     end
     
     methods
-        function maze = CorridorMaze_v3(comPort)
+        function maze = CorridorMaze(comPort)
             % Set up parameters
             %------------------------------------------------------------
             
@@ -71,7 +71,13 @@ classdef CorridorMaze < handle
             %   than the mesh position (1)
             %------------------------------------------------------------
             maze.corridor_state = [0 0 0 0];
-             
+            
+            % Capacitive lick sensors can get "stuck" in the active state.
+            % Check for it and issue warning if the case.
+            lick_state = maze.get_lick_state;
+            if any(lick_state)
+                fprintf('WARNING: Lick sensors persistently active?\n');
+            end
         end
         
         function opto_on(maze)
