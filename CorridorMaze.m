@@ -32,13 +32,13 @@ classdef CorridorMaze < handle
             % JP3
             p.corridor(jp_to_corridor(3)).step = 29;
             p.corridor(jp_to_corridor(3)).dose = 25;
-            p.corridor(jp_to_corridor(3)).dose_duration = 25; % ms
+            p.corridor(jp_to_corridor(3)).dose_duration = 35; % ms
             p.corridor(jp_to_corridor(3)).lick = 23;
             
             % JP4
             p.corridor(jp_to_corridor(4)).step = 28;
             p.corridor(jp_to_corridor(4)).dose = 24;
-            p.corridor(jp_to_corridor(4)).dose_duration = 30;
+            p.corridor(jp_to_corridor(4)).dose_duration = 80;
             p.corridor(jp_to_corridor(4)).lick = 22;
             
             p.num_corridors = length(p.corridor);

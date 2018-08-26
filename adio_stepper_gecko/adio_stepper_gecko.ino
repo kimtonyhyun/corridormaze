@@ -42,13 +42,16 @@
 #endif
 
 #define DIGITAL_READ_INDICATOR 9
+#define DIGITAL_OUT_INDICATOR 10
 #define DEBOUNCE_DELAY 1000 // microseconds
 
 void setup() {
   /* initialize serial                                       */
   Serial.begin(115200);
   pinMode(DIGITAL_READ_INDICATOR, OUTPUT);
+  pinMode(DIGITAL_OUT_INDICATOR, OUTPUT);
   digitalWrite(DIGITAL_READ_INDICATOR, 0);
+  digitalWrite(DIGITAL_OUT_INDICATOR, 0);
 }
 
 
@@ -318,10 +321,11 @@ void loop() {
         break; 
         
       case 411:
+        digitalWrite(DIGITAL_OUT_INDICATOR, HIGH);
         digitalWrite(pin, HIGH);
         delay(val);
         digitalWrite(pin, LOW);
-      
+        digitalWrite(DIGITAL_OUT_INDICATOR, LOW);
         Serial.println(val);
         
         s = -1;
