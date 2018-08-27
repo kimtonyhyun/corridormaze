@@ -46,7 +46,7 @@ classdef CorridorMaze < handle
             % Synchronization outputs
             p.sync.miniscope_trig = 13;
             p.sync.foot_pedal = 12;
-            p.sync.og_led = 10;
+            p.sync.og_led = 11;
             
             maze.params = p;
             
